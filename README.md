@@ -12,9 +12,9 @@ QRent
 This project aims to develop a car rental application specifically designed for event organizers. The application allows users to rent vehicles easily, manage rental schedules, and ensure the availability of cars according to event needs.
 
 ## Members : 
-- 22105110-- People in here
-- 22105110-- People in here
-- 22105110-- People in here
+- 2210511053 - Ananda Divana
+- 2210511063 - Daffa Bagus Maulana
+- 2210511087 - Diaz Saputra
 
 ## Documentation and Guide : 
 For more information about this project, please visit the documentation page on GitHub Wiki:
