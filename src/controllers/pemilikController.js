@@ -1,10 +1,8 @@
-const mysql = require('mysql');
 const express = require("express")
 const db = require("../db")
 
-const getAllCar = (req, res) => {
-    console.log("halo")
-    const sql = `SELECT * FROM mobil`;
+const getAllPemilik = (req, res) => {
+    const sql = `SELECT * FROM pemilik`;
         db.query(sql, (err, results) => {
         if (err) {
         return res.status(500).send(err);
@@ -13,4 +11,4 @@ const getAllCar = (req, res) => {
     });
 }
 
-module.exports = { getAllCar }
+module.exports = { getAllPemilik }
