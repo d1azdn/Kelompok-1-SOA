@@ -1,0 +1,29 @@
+{
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mysql": "^2.18.1"
+  },
+  "name": "kelompok-1-soa",
+  "version": "1.0.0",
+  "description": "kelompok 1 service things.",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/d1azdn/Kelompok-1-SOA.git"
+  },
+  "keywords": [
+    "express"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/d1azdn/Kelompok-1-SOA/issues"
+  },
+  "homepage": "https://github.com/d1azdn/Kelompok-1-SOA#readme"
+}
