@@ -14,11 +14,13 @@ app.use('/penyewa', require('./src/routes/penyewaRoutes'));
 app.use('/rental', require('./src/routes/rentalRoutes'));
 app.use('/return', require('./src/routes/returnRoutes'));
 app.use('/ulasan', require('./src/routes/ulasanRoutes'));
+app.use('/ulasan-rating', require('./src/routes/ulasanRatingRoutes'));
 app.use('/auth', require('./src/routes/authRoutes'));
 app.use('/detailTransaksiPenyewaan', require('./src/routes/detailTransaksiPenyewaanRoutes'));
 app.use('/rental-history', require('./src/routes/rentalHistoryRoutes'));
 app.use('/rental-detail', require('./src/routes/rentalDetailRoutes'));
 app.use('/owner-cars', require('./src/routes/ownerCarsRoutes'));
+app.use('/laporan', require('./src/routes/laporanRoutes'));
 
 // Error handling
 app.use((err, req, res, next) => {
