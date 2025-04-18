@@ -7,47 +7,65 @@ const z = require('zod')
 const { createId } = require("@paralleldrive/cuid2")
 
 const getUserCache = async (req,res) => {
-    res.send('halo')
-    // const { userId } = req.params
+    const { userId } = req.params
 
-    // try{
-    //     const checkSession = await client.get(`session_user:${userId}`)
-    //     if (!checkSession){
-    //         return res.status(404).json({
-    //             message:'Session tidak ditemukan'
-    //         })
-    //     }
-    //     return res.status(200).json({ session: JSON.parse(session) });
-    // } catch (err){
-    //     return res.status(500).json({
-    //         message:'Internal server error'
-    //     })
-    // }
+    try{
+        const checkSession = await client.hGetAll(`session_user:${userId}`)
+        if (!checkSession){
+            return res.status(404).json({
+                message:'Session tidak ditemukan'
+            })
+        }
+        return res.status(200).json({ session: checkSession });
+    } catch (err){
+        return res.status(500).json({
+            message:'Internal server error'
+        })
+    }
 }
 
 const postUserCache = async (req,res) => {
-    res.send('halo')
-    // const { userId } = req.params
-    // const key = `session_user:${userId}`
+    const { userId } = req.params
+    const { nama, alamat, email, password, no_telepon } = req.body
 
-    // try{
-    //     await client.hSet(key, {
-    //         user_id: user.user_id,
-    //         nama: user.nama,
-    //         alamat: user.alamat,
-    //         no_telp: user.no_telp,
-    //         login_time: new Date().toISOString(),
-    //     })
-        
-    // } catch (err){
-    //     return res.status(500).json({
-    //         message:'Internal server error'
-    //     })
-    // }
+    try{
+        await client.hSet(`session_user:${userId}`, {
+            user_id: userId,
+            nama: nama,
+            alamat: alamat,
+            email: email,
+            no_telepon: no_telepon,
+            login_time: new Date().toISOString()
+            });
+        await client.expire(`session_user:${userId}`, 3600);
+        return res.status(200).json({
+            message:'Berhasil caching user'
+        })
+    } catch (err){
+        return res.status(500).json({
+            message:'Internal server error'
+        })
+    }
 }
 
-const deleteUserCache = (req,res) => {
-    res.send('halo')
+const deleteUserCache = async(req,res) => {
+    const { userId } = req.params
+
+    try{
+        const checkSession = await client.del(`session_user:${userId}`)
+        if (!checkSession){
+            return res.status(404).json({
+                message:'Session tidak ditemukan'
+            })
+        }
+        return res.status(200).json({
+            message:'Session berhasil dihapus'
+        });
+    } catch (err){
+        return res.status(500).json({
+            message:'Internal server error'
+        })
+    }
 }
 
 module.exports = { getUserCache, postUserCache, deleteUserCache }

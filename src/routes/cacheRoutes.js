@@ -1,11 +1,12 @@
 require('dotenv').config();
 const express = require("express")
 const router = express.Router();
+const { getUserCache, postUserCache, deleteUserCache } = require("../controllers/cacheController")
 
 
-// router.get('/user/session/:user_id', getUserCache)
-// router.post('/user/session/:user_id' , postUserCache)
-// router.delete('/user/session/:user_id', deleteUserCache)
+router.get('/user/session/:userId', getUserCache)
+router.post('/user/session/:userId' , postUserCache)
+router.delete('/user/session/:userId', deleteUserCache)
 
 
 module.exports = router;
