@@ -1,4 +1,5 @@
 const mysql = require("mysql")
+const redis = require("redis")
 require('dotenv').config()
 
 const db = mysql.createConnection({
@@ -15,4 +16,7 @@ const db = mysql.createConnection({
     console.log('Connected to MySQL');
 });
 
-module.exports = db
+const client = redis.createClient()
+client.connect();
+
+module.exports = { db, client }

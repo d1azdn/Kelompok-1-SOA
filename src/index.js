@@ -6,6 +6,7 @@ const rentalRoutes = require("./routes/rentalRoutes")
 const returnRoutes = require("./routes/returnRoutes")
 const ulasanRoutes = require("./routes/ulasanRoutes")
 const authRoutes = require("./routes/authRoutes")
+const cacheRoutes = require("./routes/cacheRoutes")
 
 const router = express.Router()
 
@@ -16,5 +17,6 @@ router.use("/rental", rentalRoutes)
 router.use("/return", returnRoutes)
 router.use("/ulasan", ulasanRoutes)
 router.use("/auth", authRoutes)
+router.use("/cache", cacheRoutes)
 
 module.exports = router;

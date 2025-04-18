@@ -1,6 +1,6 @@
 const express = require("express")
 require('dotenv').config();
-const db = require("../db")
+const { db, client } = require("../db")
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const z = require('zod')
@@ -30,13 +30,21 @@ const authLogin = async (req,res) => {
         const token = jwt.sign(
             {
                 id: dbres[0].id_penyewa,
-                name: dbres[0].nama,
-                email: dbres[0].email,
-                picture: dbres[0].nama
             },
             process.env.JWT_SECRET_KEY,
             { expiresIn: '1h' }
         );
+
+        res.cookie('session_user', dbres[0].id_penyewa)
+        await client.hSet(`session_user:${dbres[0].id_penyewa}`, {
+            user_id: dbres[0].id_penyewa,
+            nama: dbres[0].nama,
+            alamat: dbres[0].alamat,
+            email: dbres[0].email,
+            no_telepon: dbres[0].no_telepon,
+            login_time: new Date().toISOString()
+          });
+        await client.expire(`session_user:${dbres[0].id_penyewa}`, 3600);
     
         return res.status(200).json({
             token:token,
@@ -68,7 +76,7 @@ const authRegister = async (req,res) => {
     const hashedPassword = await bcrypt.hash(password,10)
 
     try{
-        db.query('SELECT * FROM penyewa WHERE email = ?', [email], (err,row)=>{
+        db.query('SELECT * FROM penyewa WHERE email = ?', [email], async (err,row)=>{
             if (row.length>0){
                 return res.status(400).json({
                     message:'Email sudah terdaftar' 
@@ -77,13 +85,33 @@ const authRegister = async (req,res) => {
 
             const randomIdgenerator = createId()
 
-            db.query('INSERT INTO penyewa (id_penyewa, nama, alamat, email, password, no_telepon) values (?, ?, ?, ?, ?, ?)', [randomIdgenerator, nama, alamat, email, hashedPassword, no_telepon], (err)=>{
-                return res.status(200).json({
-                    message:'Email berhasil terdaftar!'
-                })
-            }); 
+            db.query('INSERT INTO penyewa (id_penyewa, nama, alamat, email, password, no_telepon) values (?, ?, ?, ?, ?, ?)', [randomIdgenerator, nama, alamat, email, hashedPassword, no_telepon]); 
 
+            const token = jwt.sign(
+                {
+                    id: randomIdgenerator,
+                },
+                process.env.JWT_SECRET_KEY,
+                { expiresIn: '1h' }
+            );
+            
+            res.cookie('session_user', randomIdgenerator)
+            await client.hSet(`session_user:${randomIdgenerator}`, {
+                user_id: randomIdgenerator,
+                nama: nama,
+                alamat: alamat,
+                email: email,
+                no_telepon: no_telepon,
+                login_time: new Date().toISOString()
+                });
+            await client.expire(`session_user:${randomIdgenerator}`, 3600);
+            return res.status(200).json({
+                token: token,
+                message:'Email berhasil terdaftar'
+            })
         });
+
+    
 
     }catch (err){
         return res.status(500).json({
