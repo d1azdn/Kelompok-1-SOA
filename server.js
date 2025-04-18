@@ -10,6 +10,10 @@ app.use('/penyewa', require('./src/routes/penyewaRoutes'));
 app.use('/rental', require('./src/routes/rentalRoutes'));
 app.use('/return', require('./src/routes/returnRoutes'));
 app.use('/ulasan', require('./src/routes/ulasanRoutes'));
+
+app.use('/detailTransaksiPenyewaan', require('./src/routes//detailTransaksiPenyewaanRoutes'));
+
+
 // Tambahkan route lain untuk semua table
 
 app.listen(port, () => {
