@@ -1,6 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const mysql = require('mysql2');
+const { generalThrottling, searchThrottling, authThrottling, heavyOperationThrottling } = require('./src/middleware/throttling');
+
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -8,6 +11,9 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
+
+// Terapkan throttling global
+app.use(generalThrottling);
 
 // Serve static files from the public directory
 app.use(express.static('public'));
@@ -20,13 +26,30 @@ app.use('/rental', require('./src/routes/rentalRoutes'));
 app.use('/return', require('./src/routes/returnRoutes'));
 app.use('/ulasan', require('./src/routes/ulasanRoutes'));
 app.use('/ulasan-rating', require('./src/routes/ulasanRatingRoutes'));
-app.use('/auth', require('./src/routes/authRoutes'));
+app.use('/auth', authThrottling, require('./src/routes/authRoutes'));
 app.use('/detailTransaksiPenyewaan', require('./src/routes/detailTransaksiPenyewaanRoutes'));
 app.use('/rental-history', require('./src/routes/rentalHistoryRoutes'));
 app.use('/rental-detail', require('./src/routes/rentalDetailRoutes'));
 app.use('/owner-cars', require('./src/routes/ownerCarsRoutes'));
-app.use('/laporan', require('./src/routes/laporanRoutes'));
+app.use('/laporan', heavyOperationThrottling, require('./src/routes/laporanRoutes'));
 app.use('/lokasi-rental', require('./src/routes/lokasiRentalRoutes'));
+app.use('/lokasi-rental/search', searchThrottling, require('./src/routes/lokasiRentalRoutes'));
+
+// Database connection
+const db = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: 'qrent'
+});
+
+db.connect((err) => {
+    if (err) {
+        console.error('Error connecting to MySQL:', err);
+        return;
+    }
+    console.log('Connected to MySQL');
+});
 
 // Error handling
 app.use((err, req, res, next) => {
