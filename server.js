@@ -1,12 +1,17 @@
-const express = require("express");
-const routes = require("./src/index.js");
-
+const express = require('express');
+const bodyParser = require('body-parser');
 const app = express();
-app.use(express.json());
+const port = 3000;
 
-app.use("/api", routes);
+app.use(bodyParser.json());
+app.use('/mobil', require('./src/routes/mobilRoutes'));
+app.use('/pemilik', require('./src/routes/pemilikRoutes'));
+app.use('/penyewa', require('./src/routes/penyewaRoutes'));
+app.use('/rental', require('./src/routes/rentalRoutes'));
+app.use('/return', require('./src/routes/returnRoutes'));
+app.use('/ulasan', require('./src/routes/ulasanRoutes'));
+// Tambahkan route lain untuk semua table
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
 });
