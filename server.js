@@ -18,6 +18,7 @@ app.use('/auth', require('./src/routes/authRoutes'));
 app.use('/detailTransaksiPenyewaan', require('./src/routes/detailTransaksiPenyewaanRoutes'));
 app.use('/rental-history', require('./src/routes/rentalHistoryRoutes'));
 app.use('/rental-detail', require('./src/routes/rentalDetailRoutes'));
+app.use('/owner-cars', require('./src/routes/ownerCarsRoutes'));
 
 // Error handling
 app.use((err, req, res, next) => {

@@ -2,15 +2,16 @@ const mysql = require("mysql")
 require('dotenv').config()
 
 const db = mysql.createConnection({
-    host: 'localhost',
-    user: process.env.USER,
-    password: process.env.PASSWORD,
-    database: process.env.DATABASE
-   }); 
+    host: process.env.DB_HOST || 'localhost',
+    user: process.env.DB_USER || 'root',
+    password: process.env.DB_PASSWORD || '',
+    database: process.env.DB_NAME || 'qrent'
+}); 
    
-   db.connect((err) => {
+db.connect((err) => {
     if (err) {
-    throw err;
+        console.error('Error connecting to the database:', err);
+        return;
     }
     console.log('Connected to MySQL');
 });
