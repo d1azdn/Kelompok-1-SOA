@@ -1,5 +1,6 @@
 const db = require('../db');
 
+// Ambil detail lengkap dari satu transaksi sewa, termasuk info mobil dan penyewa.
 // GET detail transaksi penyewaan by ID rental
 exports.getDetailTransaksiPenyewaan = (req, res) => {
     const { id_rental } = req.params;
