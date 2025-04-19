@@ -40,7 +40,7 @@ A modern car rental application built with Node.js, Express, and MySQL, featurin
 | Feature | Status |
 |---------|--------|
 | API Basic | 32 API Endpoints ✅ |
-| API Complex | 15 API Endpoints ✅ |
+| API Complex | 18 API Endpoints ✅ |
 | API NoSQL | ... API Endpoints ✅ |
 | Frontend | ... Page ✅  |
 | Service Worker | ❌ |
@@ -176,39 +176,11 @@ API COMPLEX
 - `GET /lokasi-rental/provinsi/list` - Mendapatkan daftar provinsi yang tersedia
 - `GET /lokasi-rental/:id_pemilik` - Menampilkan detail lokasi rental berdasarkan ID pemilik
 
+### 7. UlasanRating (`/ulasan-rating`)
+- `GET /ulasan-rating/mobil/:id_mobil` - Menampilkan seluruh ulasan yang berkaitan dengan satu mobil
+- `GET /ulasan-rating/penyewa/:id_penyewa` - Menampilkan ulasan-ulasan yang diberikan oleh penyewa
+- `GET /ulasan-rating/mobil/terbaik` - Menampilkan 5 mobil dengan rata-rata rating tertinggi
 
-### Authentication
-- `POST /auth/register` - User registration
-- `POST /auth/login` - User login
-- `GET /auth/google` - Google OAuth login
-
-### Cars
-- `GET /cars` - List all cars
-- `GET /cars/:id` - Get car details
-- `POST /cars` - Add new car
-- `PUT /cars/:id` - Update car
-- `DELETE /cars/:id` - Delete car
-
-### Rental
-- `POST /rental` - Create rental
-- `GET /rental/:id` - Get rental details
-- `PUT /rental/:id` - Update rental
-- `DELETE /rental/:id` - Cancel rental
-
-### Location
-- `GET /location/nearby` - Find nearby cars
-- `GET /location/:id` - Get location details
-
-### Reports
-- `GET /laporan/penyewa-terbanyak` - Top renters
-- `GET /laporan/mobil-paling-laris` - Most rented cars
-- `GET /laporan/denda-terbesar` - Highest fines
-
-### Reviews
-- `POST /reviews` - Add review
-- `GET /reviews/:carId` - Get car reviews
-- `PUT /reviews/:id` - Update review
-- `DELETE /reviews/:id` - Delete review
 
 ## Security Features
 
