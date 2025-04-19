@@ -1,10 +1,10 @@
-const { client } = require("../db")
+const { client } = require("../../db")
 
-const getUserCache = async (req,res) => {
-    const { id_penyewa } = req.params
+const getRentalRatingCache = async (req,res) => {
+    const { id_rental } = req.params
 
     try{
-        const checkSession = await client.hGetAll(`session_user:${id_penyewa}`)
+        const checkSession = await client.hGetAll(`rental_rating:${id_rental}`)
         if (Object.keys(checkSession).length == 0){
             return res.status(404).json({
                 message:'Session tidak ditemukan'
@@ -18,20 +18,19 @@ const getUserCache = async (req,res) => {
     }
 }
 
-const postUserCache = async (req,res) => {
-    const { id_penyewa } = req.params
-    const { nama, alamat, email, password, no_telepon } = req.body
+const postRentalRatingCache = async (req,res) => {
+    const { id_rental } = req.params
+    const { rating, tanggal, id_ulasan, ulasan } = req.body
 
     try{
-        await client.hSet(`session_user:${id_penyewa}`, {
-            user_id: id_penyewa,
-            nama: nama,
-            alamat: alamat,
-            email: email,
-            no_telepon: no_telepon,
-            login_time: new Date().toISOString()
+        await client.hSet(`rental_rating:${id_rental}`, {
+            id_ulasan: id_ulasan,
+            tanggal: tanggal,
+            rating: rating,
+            ulasan: ulasan,
+            last_updated: new Date().toISOString()
             });
-        await client.expire(`session_user:${id_penyewa}`, 3600);
+        await client.expire(`rental_rating:${id_rental}`, 3600);
         return res.status(200).json({
             message:'Berhasil caching user'
         })
@@ -42,16 +41,17 @@ const postUserCache = async (req,res) => {
     }
 }
 
-const deleteUserCache = async(req,res) => {
-    const { id_penyewa } = req.params
+const deleteRentalRatingCache = async(req,res) => {
+    const { id_rental } = req.params
 
     try{
-        const checkSession = await client.del(`session_user:${id_penyewa}`)
+        const checkSession = await client.hGetAll(`rental_rating:${id_rental}`)
         if (Object.keys(checkSession).length == 0){
             return res.status(404).json({
                 message:'Session tidak ditemukan'
             })
         }
+        await client.del(`rental_rating:${id_rental}`)
         return res.status(200).json({
             message:'Session berhasil dihapus'
         });
@@ -62,4 +62,4 @@ const deleteUserCache = async(req,res) => {
     }
 }
 
-module.exports = { getUserCache, postUserCache, deleteUserCache }
+module.exports = { getRentalRatingCache, postRentalRatingCache, deleteRentalRatingCache }

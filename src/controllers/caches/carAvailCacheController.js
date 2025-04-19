@@ -1,4 +1,4 @@
-const { client } = require("../db")
+const { client } = require("../../db")
 
 const getCarAvailable = async(req,res) => {
     const { id_mobil } = req.params
