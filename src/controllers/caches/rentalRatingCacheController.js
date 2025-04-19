@@ -32,7 +32,7 @@ const postRentalRatingCache = async (req,res) => {
             });
         await client.expire(`rental_rating:${id_rental}`, 3600);
         return res.status(200).json({
-            message:'Berhasil caching user'
+            message:'Berhasil caching rental rating'
         })
     } catch (err){
         return res.status(500).json({

@@ -1,4 +1,4 @@
-const pool = require('../db');
+const {db,client} = require('../db');
 
 // Menampilkan seluruh ulasan yang berkaitan dengan satu mobil
 const getUlasanByMobil = async (req, res) => {
@@ -30,7 +30,7 @@ const getUlasanByMobil = async (req, res) => {
             ORDER BY u.tanggal DESC
         `;
 
-        pool.query(query, [id_mobil], (error, results) => {
+        db.query(query, [id_mobil], (error, results) => {
             if (error) {
                 console.error('Error fetching reviews by car:', error);
                 return res.status(500).json({ error: 'Internal server error', details: error.message });
@@ -89,7 +89,7 @@ const getUlasanByPenyewa = async (req, res) => {
             ORDER BY u.tanggal DESC
         `;
 
-        pool.query(query, [id_penyewa], (error, results) => {
+        db.query(query, [id_penyewa], (error, results) => {
             if (error) {
                 console.error('Error fetching reviews by tenant:', error);
                 return res.status(500).json({ error: 'Internal server error', details: error.message });
@@ -143,7 +143,7 @@ const getMobilTerbaik = async (req, res) => {
             LIMIT 5
         `;
 
-        pool.query(query, (error, results) => {
+        db.query(query, (error, results) => {
             if (error) {
                 console.error('Error fetching top rated cars:', error);
                 return res.status(500).json({ error: 'Internal server error', details: error.message });

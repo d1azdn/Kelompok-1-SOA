@@ -1,10 +1,10 @@
-const pool = require('../db');
+const {db, client} = require('../db');
 
 // Get All Cars
 const getAllMobil = async (req, res) => {
     try {
         const query = 'SELECT * FROM mobil';
-        pool.query(query, (error, results) => {
+        db.query(query, (error, results) => {
             if (error) {
                 console.error('Error fetching cars:', error);
                 return res.status(500).json({ error: 'Internal server error' });
@@ -22,7 +22,7 @@ const getMobilById = async (req, res) => {
     try {
         const { id } = req.params;
         const query = 'SELECT * FROM mobil WHERE id = ?';
-        pool.query(query, [id], (error, results) => {
+        db.query(query, [id], (error, results) => {
             if (error) {
                 console.error('Error fetching car:', error);
                 return res.status(500).json({ error: 'Internal server error' });
@@ -63,7 +63,7 @@ const createMobil = async (req, res) => {
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
 
-        pool.query(
+        db.query(
             query,
             [plat_nomor, nama, merek, model, transmisi, tahun, warna, bahan_bakar, harga_sewa, status, id_pemilik],
             (error, results) => {
@@ -106,7 +106,7 @@ const updateMobil = async (req, res) => {
             WHERE id = ?
         `;
 
-        pool.query(
+        db.query(
             query,
             [plat_nomor, nama, merek, model, transmisi, tahun, warna, bahan_bakar, harga_sewa, status, id_pemilik, id],
             (error, results) => {
@@ -131,7 +131,7 @@ const deleteMobil = async (req, res) => {
     try {
         const { id } = req.params;
         const query = 'DELETE FROM mobil WHERE id = ?';
-        pool.query(query, [id], (error, results) => {
+        db.query(query, [id], (error, results) => {
             if (error) {
                 console.error('Error deleting car:', error);
                 return res.status(500).json({ error: 'Internal server error' });

@@ -3,9 +3,13 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const mysql = require('mysql2');
 const { generalThrottling, searchThrottling, authThrottling, heavyOperationThrottling } = require('./src/middleware/throttling');
+const { swaggerUi, specs } = require('./src/swagger.js');
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
+// Back to 5000 my guy
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 // Middleware
 app.use(express.json());
@@ -27,12 +31,14 @@ app.use('/return', require('./src/routes/returnRoutes'));
 app.use('/ulasan', require('./src/routes/ulasanRoutes'));
 app.use('/ulasan-rating', require('./src/routes/ulasanRatingRoutes'));
 app.use('/auth', authThrottling, require('./src/routes/authRoutes'));
+app.use('/cache', authThrottling, require('./src/routes/cacheRoutes.js'));
 app.use('/detailTransaksiPenyewaan', require('./src/routes/detailTransaksiPenyewaanRoutes'));
 app.use('/rental-history', require('./src/routes/rentalHistoryRoutes'));
 app.use('/rental-detail', require('./src/routes/rentalDetailRoutes'));
 app.use('/owner-cars', require('./src/routes/ownerCarsRoutes'));
 app.use('/laporan', heavyOperationThrottling, require('./src/routes/laporanRoutes'));
 app.use('/lokasi-rental', require('./src/routes/lokasiRentalRoutes'));
+app.use('/lokasi-rental/search', searchThrottling, require('./src/routes/lokasiRentalRoutes'));
 app.use('/lokasi-rental/search', searchThrottling, require('./src/routes/lokasiRentalRoutes'));
 
 // Database connection

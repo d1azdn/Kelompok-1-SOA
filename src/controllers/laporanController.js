@@ -1,4 +1,4 @@
-const pool = require('../db');
+const { db, client } = require('../db');
 
 // Menampilkan penyewa yang paling sering menyewa mobil
 const getPenyewaTerbanyak = async (req, res) => {
@@ -19,7 +19,7 @@ const getPenyewaTerbanyak = async (req, res) => {
             LIMIT 10
         `;
 
-        pool.query(query, (error, results) => {
+        db.query(query, (error, results) => {
             if (error) {
                 console.error('Error fetching top tenants:', error);
                 return res.status(500).json({ error: 'Internal server error', details: error.message });
@@ -62,7 +62,7 @@ const getMobilPalingLaris = async (req, res) => {
             LIMIT 10
         `;
 
-        pool.query(query, (error, results) => {
+        db.query(query, (error, results) => {
             if (error) {
                 console.error('Error fetching most rented cars:', error);
                 return res.status(500).json({ error: 'Internal server error', details: error.message });
@@ -113,7 +113,7 @@ const getDendaTerbesar = async (req, res) => {
             LIMIT 10
         `;
 
-        pool.query(query, (error, results) => {
+        db.query(query, (error, results) => {
             if (error) {
                 console.error('Error fetching highest penalties:', error);
                 return res.status(500).json({ error: 'Internal server error', details: error.message });
