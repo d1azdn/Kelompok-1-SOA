@@ -8,7 +8,7 @@ const Register = () => {
 
   // States for registration form fields
   const [email, setEmail] = useState('');
-  const [nama, setNama] = useState(''); // Renamed from fullName to nama
+  const [nama, setNama] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
@@ -19,6 +19,10 @@ const Register = () => {
     // Basic validation
     if (!email || !nama || !password || !confirmPassword) {
       toast.error('All fields are required!');
+      return;
+    }
+    if (password.length <= 8) {
+      toast.error('Password must be longer than 8 characters!');
       return;
     }
     if (password !== confirmPassword) {
