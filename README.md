@@ -270,9 +270,13 @@ npm test -- tests/auth.test.js
 npm test -- tests/throttling.test.js
 ```
 
+## ERD
+
+<img src="https://raw.githubusercontent.com/d1azdn/Kelompok-1-SOA/refs/heads/master/erd.jpeg" width=500>
+
 ## API Documentation
 
-The API documentation is available at `/api/docs` when the server is running.
+The API documentation is available at `/api-docs` when the server is running.
 
 
 ## License
