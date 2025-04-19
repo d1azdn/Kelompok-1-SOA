@@ -7,7 +7,7 @@ const Payment = () => {
   const location = useLocation();
 
   // Get the booking data from location.state
-  const { car, pickupDate, returnDate } = location.state || {};
+  const { car, pickupDate, returnDate, userName, userEmail, identityNumber, birthDate, address, price } = location.state || {};
 
   // If no booking data exists, redirect to home
   useEffect(() => {
@@ -19,26 +19,44 @@ const Payment = () => {
 
   if (!car) return null; // If car data is missing, stop rendering
 
-  // Format dates using toLocaleDateString
-  const formattedPickupDate = new Date(pickupDate).toLocaleDateString();
-  const formattedReturnDate = new Date(returnDate).toLocaleDateString();
-  
-  const [paymentAmount, setPaymentAmount] = useState(car.price); // Default payment amount to the car price
+  // Format the dates (pickupDate and returnDate) before displaying
+  const formatDate = (date) => {
+    if (!date) return '';
+    const d = new Date(date);
+    return d.toLocaleDateString('en-GB'); // Format date to dd/MM/yyyy
+  };
+
+  const formattedPickupDate = formatDate(pickupDate);
+  const formattedReturnDate = formatDate(returnDate);
+
+  const [paymentAmount, setPaymentAmount] = useState(price || car.price); // Default payment amount to the car price
 
   const handlePaymentSubmit = (e) => {
     e.preventDefault();
 
-    // Basic validation for payment
     if (paymentAmount <= 0) {
       toast.error('Invalid payment amount!');
       return;
     }
 
-    // Proceed to confirm payment
+    // Simulate successful payment confirmation
     toast.success('Payment successful!');
-    
-    // Here you can update the status of the booking and then redirect
-    navigate('/historytransaction', { state: { transactionId: '123', status: 'on-going' } });
+
+    // Simulate saving the transaction to localStorage and redirecting
+    const updatedTransaction = {
+      ...location.state,
+      status: 'on-going',
+    };
+
+    // Save the updated transaction to localStorage
+    const storedTransactions = JSON.parse(localStorage.getItem('transactions')) || [];
+    const updatedTransactions = storedTransactions.map((transaction) =>
+      transaction.id === updatedTransaction.id ? updatedTransaction : transaction
+    );
+    localStorage.setItem('transactions', JSON.stringify(updatedTransactions));
+
+    // Redirect to the HistoryTransaction page
+    navigate('/historytransaction');
   };
 
   return (
@@ -47,7 +65,8 @@ const Payment = () => {
 
       <div className="bg-white p-6 rounded-lg shadow-lg">
         <h3 className="text-xl font-semibold text-gray-800 mb-4">{car.name}</h3>
-        
+        <img src={car.image} alt={car.name} className="w-full h-48 object-cover rounded-lg mb-4" />
+
         <div className="mt-4">
           <p><strong>Pickup Location:</strong> {car.location}</p>
           <p><strong>Rental Dates:</strong> {formattedPickupDate} to {formattedReturnDate}</p>
@@ -73,12 +92,10 @@ const Payment = () => {
             <h4 className="font-semibold text-gray-800">Payment Details</h4>
             <p><strong>Transfer Amount:</strong> IDR {paymentAmount.toLocaleString()}</p>
             <p><strong>Payment QR Code:</strong></p>
-            {/* Here you can display a real QR code or generate one for demo */}
-            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj1tNbNyUkqJqe9bzm3MsY3r2AViejHGaNZIhxYDsRW194M1Z9Dv9U-ywfaPQgven6p2P03AyaPbg6DyWkX3p-iw0GF7SwnRXOhJxSgdCXtAGJx2gojDfG0Tty1S_2blt7EP8TwJ3yaMps/s911/QRIS+MASJID+ABU+BAKAR+ASSHIDIQ-page-003.jpg" alt="Payment QR" className="mb-4" />
+            <img src="https://via.placeholder.com/150" alt="Payment QR" className="mb-4" />
             <p>Please scan this QR code or use the details above to complete the payment.</p>
           </div>
 
-          {/* Confirm Payment Button */}
           <button type="submit" className="bg-primary text-white py-2 px-6 rounded-md hover:bg-primary-dull">
             Confirm Payment
           </button>

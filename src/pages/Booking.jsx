@@ -10,10 +10,8 @@ const Booking = () => {
   const location = useLocation();
   const { user } = useAppContext(); // Get the user data from AppContext
 
-  // Get car details and dates from location.state (if any)
   const { car, pickupDate, returnDate } = location.state || {};
 
-  // If no car data, redirect to home
   useEffect(() => {
     if (!car) {
       toast.error('Data mobil tidak tersedia!');
@@ -35,13 +33,12 @@ const Booking = () => {
   const availableFrom = new Date(car.availableFrom);
   const availableUntil = new Date(car.availableUntil);
 
-  // If no dates are passed (from home page), allow the user to select dates
   const isDatesMissing = !pickupDate || !returnDate;
 
   useEffect(() => {
     if (pickupDate && returnDate) {
-      setSelectedPickupDate(new Date(pickupDate)); // Set passed pickupDate
-      setSelectedReturnDate(new Date(returnDate)); // Set passed returnDate
+      setSelectedPickupDate(new Date(pickupDate));
+      setSelectedReturnDate(new Date(returnDate));
     }
 
     if (user) {
@@ -53,24 +50,22 @@ const Booking = () => {
     }
   }, [pickupDate, returnDate, user]);
 
-  // Handle form submission
   const handleBookingSubmit = (e) => {
     e.preventDefault();
 
-    // Basic validation
     if (!userName || !userEmail || !identityNumber || !birthDate || !address) {
-      toast.error('Please complete your profile before booking!'); // Show toast error message
+      toast.error('Please complete your profile before booking!');
       return;
     }
 
-    // Check if the dates are within the car's available range
     if (selectedPickupDate < availableFrom || selectedReturnDate > availableUntil) {
-      toast.error('Selected dates are outside the car\'s availability period!'); // Show toast error message
+      toast.error('Selected dates are outside the car\'s availability period!');
       return;
     }
 
-    // Prepare the booking data
-    const bookingData = {
+    // Save booking as a new transaction
+    const transactionData = {
+      id: new Date().getTime(),  // unique transaction ID
       car,
       pickupDate: selectedPickupDate,
       returnDate: selectedReturnDate,
@@ -78,28 +73,30 @@ const Booking = () => {
       userEmail,
       identityNumber,
       birthDate,
-      address
+      address,
+      status: 'need to pay', // Initially "need to pay"
     };
 
-    // Redirect to the payment page with the booking details
-    navigate('/payment', { state: bookingData });
+    // Store the transaction in localStorage (simulating a DB)
+    const storedTransactions = JSON.parse(localStorage.getItem('transactions')) || [];
+    storedTransactions.push(transactionData);
+    localStorage.setItem('transactions', JSON.stringify(storedTransactions));
+
+    // Redirect to payment page
+    navigate('/payment', { state: transactionData });
   };
 
   return (
     <div className="container mx-auto p-6 mt-6 mb-24">
       <h1 className="text-3xl text-center font-semibold text-gray-800 mb-8">Booking Details</h1>
-
       <div className="bg-white p-6 rounded-lg shadow-lg">
         <h3 className="text-xl font-semibold text-gray-800 mb-4">{car.name}</h3>
         <p className="text-sm text-gray-500">{car.description}</p>
-        <img 
-          src={car.image} 
-          alt={car.name} 
-          className="w-90 object-cover rounded-lg mb-4" 
-        />
+        <img src={car.image} alt={car.name} className="w-full h-48 object-cover rounded-lg mb-4" />
 
+        {/* Form inputs here for user details, rental dates, etc. */}
         {/* Car Details */}
-        <div className="mb-6">        
+        <div className='mb-6'>
           <div className="flex gap-4 mt-4">
             <div className="w-1/2">
               <h4 className="font-semibold text-gray-800">Seats:</h4>
@@ -217,9 +214,9 @@ const Booking = () => {
             />
           </div>
 
-          <button type="submit" className="bg-primary text-white py-2 px-6 rounded-md hover:bg-primary-dull">
-            Confirm Booking
-          </button>
+        <button type="submit" className="bg-primary text-white py-2 px-6 rounded-md hover:bg-primary-dull">
+          Confirm Booking
+        </button>
         </form>
       </div>
     </div>

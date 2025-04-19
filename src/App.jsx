@@ -15,7 +15,7 @@ import Login from './pages/Login';  // Login page
 import Profile from './pages/Profile'; // Profile page
 import ProtectedRoute from './context/ProtectedRoute';
 import Payment from './pages/Payment'; // Payment page
-// import HistoryTransaction from './pages/HistoryTransaction'; // HistoryTransaction page
+import HistoryTransaction from './pages/HistoryTransaction'; // HistoryTransaction page
 // import HistoryTransactionDetails from './pages/HistoryTransactionDetails';
 
 const App = () => {
@@ -66,7 +66,7 @@ const App = () => {
         <Route path="/payment" element={<ProtectedRoute element={<Payment />} />} />
 
         {/* History Transaction Page (Displays all transactions) */}
-        {/* <Route path="/historytransaction" element={<ProtectedRoute element={<HistoryTransaction />} />} /> */}
+        <Route path="/historytransaction" element={<ProtectedRoute element={<HistoryTransaction />} />} />
 
         {/* History Transaction Details Page (Displays specific transaction details) */}
         {/* <Route path="/historytransaction/:transactionId" element={<ProtectedRoute element={<HistoryTransactionDetails />} />} /> */}
