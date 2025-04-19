@@ -1,34 +1,41 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
-import { useAppContext } from '../context/AppContext';  // Import useAppContext hook
+import axios from 'axios';
+import { useAppContext } from '../context/AppContext';
 
 const Login = () => {
   const navigate = useNavigate();
-  const { login } = useAppContext();  // Access login function from AppContext
+  const { login } = useAppContext()
 
-  // States for login form
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Basic validation
     if (!email || !password) {
       toast.error('Email and password are required!');
       return;
     }
 
-    // Here you would call your API to authenticate the user (Static for now)
-    toast.success('Login successful!');
+    try {
+      const response = await axios.post('http://localhost:3000/auth/login', {
+        email,
+        password,
+      });
 
-    // Call the login function from AppContext to update the global login state
-    login({ email });  // Passing user data (email for now)
+      toast.success(response.data.message);
+      const token = response.data.token; 
 
-    // Redirect to home page after successful login
-    navigate('/');
+      localStorage.setItem('token', token);
+
+      login({ email }); 
+
+      navigate('/');
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Login failed');
+    }
   };
 
   return (
@@ -68,9 +75,7 @@ const Login = () => {
             Login
           </button>
 
-          {/* NavLink to Register page */}
-          <p className="mt-4 text-center text-sm text-gray-600">Don't have an account? <Link to="/register" className="text-blue-500 hover:underline">Register</Link>
-          </p>
+          <p className="mt-4 text-center text-sm text-gray-600">Don't have an account? <Link to="/register" className="text-blue-500 hover:underline">Register</Link></p>
         </form>
       </div>
     </div>
