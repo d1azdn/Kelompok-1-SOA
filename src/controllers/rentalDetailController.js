@@ -1,4 +1,4 @@
-const pool = require('../db');
+const {db, client} = require('../db');
 
 // Get detailed rental information with car, renter, and owner details
 const getDetailedRentalInfo = async (req, res) => {
@@ -42,7 +42,7 @@ const getDetailedRentalInfo = async (req, res) => {
             ORDER BY r.tanggal_mulai DESC
         `;
 
-        pool.query(query, (error, results) => {
+        db.query(query, (error, results) => {
             if (error) {
                 console.error('Error fetching detailed rental information:', error);
                 return res.status(500).json({ error: 'Internal server error', details: error.message });
@@ -98,7 +98,7 @@ const getDetailedRentalById = async (req, res) => {
             WHERE r.id_rental = ?
         `;
 
-        pool.query(query, [id_rental], (error, results) => {
+        db.query(query, [id_rental], (error, results) => {
             if (error) {
                 console.error('Error fetching detailed rental information:', error);
                 return res.status(500).json({ error: 'Internal server error', details: error.message });

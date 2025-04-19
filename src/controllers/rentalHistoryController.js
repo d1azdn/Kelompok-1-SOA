@@ -1,4 +1,4 @@
-const pool = require('../db');
+const {db,client} = require('../db');
 
 const getRentalHistory = async (req, res) => {
     try {
@@ -22,7 +22,7 @@ const getRentalHistory = async (req, res) => {
             ORDER BY r.tanggal_mulai DESC
         `;
 
-        pool.query(query, (error, results) => {
+        db.query(query, (error, results) => {
             if (error) {
                 console.error('Error fetching rental history:', error);
                 return res.status(500).json({ error: 'Internal server error', details: error.message });
@@ -58,7 +58,7 @@ const getRentalHistoryByTenant = async (req, res) => {
             ORDER BY r.tanggal_mulai DESC
         `;
 
-        pool.query(query, [penyewa_id], (error, results) => {
+        db.query(query, [penyewa_id], (error, results) => {
             if (error) {
                 console.error('Error fetching tenant rental history:', error);
                 return res.status(500).json({ error: 'Internal server error', details: error.message });

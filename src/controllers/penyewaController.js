@@ -1,4 +1,4 @@
-const db = require('../db');
+const {db,client} = require('../db');
 
 // Get All Renters
 exports.getAllPenyewa = (req, res) => {

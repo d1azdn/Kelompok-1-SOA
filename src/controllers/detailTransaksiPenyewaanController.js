@@ -1,4 +1,4 @@
-const db = require('../db');
+const { db, client } = require("../db")
 
 // Ambil detail lengkap dari satu transaksi sewa, termasuk info mobil dan penyewa.
 // GET detail transaksi penyewaan by ID rental

@@ -1,4 +1,4 @@
-const pool = require('../db');
+const {db,client} = require('../db');
 
 // Get all cars owned by an owner with their last lease status
 const getOwnerCarsWithLastLease = async (req, res) => {
@@ -41,7 +41,7 @@ const getOwnerCarsWithLastLease = async (req, res) => {
             ORDER BY m.nama
         `;
 
-        pool.query(query, [id_pemilik], (error, results) => {
+        db.query(query, [id_pemilik], (error, results) => {
             if (error) {
                 console.error('Error fetching owner cars with last lease:', error);
                 return res.status(500).json({ error: 'Internal server error', details: error.message });
@@ -107,7 +107,7 @@ const getOwnerCarFleetSummary = async (req, res) => {
             ORDER BY m.nama
         `;
 
-        pool.query(query, [id_pemilik], (error, results) => {
+        db.query(query, [id_pemilik], (error, results) => {
             if (error) {
                 console.error('Error fetching owner car fleet summary:', error);
                 return res.status(500).json({ error: 'Internal server error', details: error.message });

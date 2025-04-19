@@ -1,4 +1,4 @@
-const pool = require('../db');
+const { db, client } = require('../db');
 
 // Fungsi untuk memisahkan komponen alamat
 const parseAddress = (alamat) => {
@@ -54,7 +54,7 @@ const getAllLokasiRental = async (req, res) => {
             ORDER BY p.alamat
         `;
 
-        pool.query(query, (error, results) => {
+        db.query(query, (error, results) => {
             if (error) {
                 console.error('Error fetching rental locations:', error);
                 return res.status(500).json({ error: 'Internal server error', details: error.message });
@@ -117,7 +117,7 @@ const getLokasiRentalById = async (req, res) => {
         `;
         
         // Eksekusi query untuk mendapatkan informasi pemilik
-        pool.query(queryPemilik, [id_pemilik], (errorPemilik, resultsPemilik) => {
+        db.query(queryPemilik, [id_pemilik], (errorPemilik, resultsPemilik) => {
             if (errorPemilik) {
                 console.error('Error fetching rental location details:', errorPemilik);
                 return res.status(500).json({ error: 'Internal server error', details: errorPemilik.message });
@@ -134,7 +134,7 @@ const getLokasiRentalById = async (req, res) => {
             lokasiRental.alamat_detail = addressComponents;
             
             // Eksekusi query untuk mendapatkan mobil yang tersedia
-            pool.query(queryMobil, [id_pemilik], (errorMobil, resultsMobil) => {
+            db.query(queryMobil, [id_pemilik], (errorMobil, resultsMobil) => {
                 if (errorMobil) {
                     console.error('Error fetching available cars:', errorMobil);
                     return res.status(500).json({ error: 'Internal server error', details: errorMobil.message });
@@ -206,7 +206,7 @@ const searchLokasiRental = async (req, res) => {
             `${keyword},%`            // Cocok di awal alamat
         ];
         
-        pool.query(query, [...patterns, ...patterns], (error, results) => {
+        db.query(query, [...patterns, ...patterns], (error, results) => {
             if (error) {
                 console.error('Error searching rental locations:', error);
                 return res.status(500).json({ error: 'Internal server error', details: error.message });
@@ -258,7 +258,7 @@ const searchLokasiRentalByProvinsi = async (req, res) => {
             ORDER BY p.alamat
         `;
         
-        pool.query(query, [`%${provinsi}%`], (error, results) => {
+        db.query(query, [`%${provinsi}%`], (error, results) => {
             if (error) {
                 console.error('Error searching rental locations by province:', error);
                 return res.status(500).json({ error: 'Internal server error', details: error.message });
@@ -296,7 +296,7 @@ const getDaftarProvinsi = async (req, res) => {
             ORDER BY provinsi
         `;
         
-        pool.query(query, (error, results) => {
+        db.query(query, (error, results) => {
             if (error) {
                 console.error('Error fetching provinces:', error);
                 return res.status(500).json({ error: 'Internal server error', details: error.message });
