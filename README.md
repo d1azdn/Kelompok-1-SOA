@@ -181,6 +181,21 @@ API COMPLEX
 - `GET /ulasan-rating/penyewa/:id_penyewa` - Menampilkan ulasan-ulasan yang diberikan oleh penyewa
 - `GET /ulasan-rating/mobil/terbaik` - Menampilkan 5 mobil dengan rata-rata rating tertinggi
 
+API NoSQL (REDIS)
+### User Cache
+- `POST /cache/user/session` — Register user (cached)
+- `GET /cache/user/session/{id}` — Get user by ID (cached)
+- `DELETE /cache/user/session/{id}` — Delete cached user by ID
+
+### Event Cache
+- `POST /cache/car/available/{id}` — Register car available status (cached)
+- `GET /cache/car/available/{id}` — Get car available status (cached)
+- `POST /cache/rental/{id}` — Register rental status (cached)
+- `GET /cache/rental/{id}` — Get rental status (cached)
+- `POST /cache/rental/rating/{id}` — Register rental rating (cached)
+- `GET /cache/rental/rating/{id}` — Get rental rating by ID (cached)
+- `DELETE /cache/rental/rating/{id}` — Delete rental rating by ID
+
 
 ## Security Features
 
