@@ -20,43 +20,215 @@ This project aims to develop a car rental application specifically designed for 
 For more information about this project, please visit the documentation page on GitHub Wiki:
 [GitHub Wiki - QRent](https://github.com/d1azdn/Kelompok-1-SOA/wiki)
 
-# Car Rental API
+# Car Rental Application
 
-A robust and feature-rich API for a car rental management system.
+A modern car rental application built with Node.js, Express, and MySQL, featuring secure authentication, car management, location-based services, and comprehensive reporting capabilities.
 
 ## Features
 
-- **Authentication & Authorization**: JWT-based authentication with role-based access control
-- **Google OAuth Integration**: Login with Google accounts
-- **Rate Limiting**: Protect the API from abuse
-- **Input Validation**: Validate all inputs using Zod
-- **Error Handling**: Centralized error handling
-- **Logging**: Comprehensive request and error logging
-- **Caching**: Improve performance with response caching
-- **Pagination**: Handle large datasets with pagination
-- **Search & Filtering**: Advanced search and filtering capabilities
-- **Security**: Helmet for security headers, CORS support
+- 🔐 Secure JWT Authentication
+- 🚗 Car Management System
+- 📍 Location-based Services
+- 📊 Advanced Reporting
+- ⭐ Review & Rating System
+- 🛡️ Rate Limiting & Throttling
+- 🔍 Search Functionality
+- 📱 Mobile-friendly API
+
+## Feature Summary
+
+| Feature | Status |
+|---------|--------|
+| API Basic | 32 API Endpoints ✅ |
+| API Complex | 15 API Endpoints ✅ |
+| API NoSQL | ... API Endpoints ✅ |
+| Frontend | ... Page ✅  |
+| Service Worker | ❌ |
+| OAuth & JWT | ✅ |
+| Integrasi 3rd Party | 1 Service ✅ |
+| Rate Limiting & Throttling | ✅ |
+| Security | ✅ |
+| Dokumentasi | Function, Inline, & Swagger ✅ |
+
+## Third-Party Integrations
+
+### 1. Google OAuth
+- **Purpose**: User authentication and profile management
+- **Features**:
+  - Google Sign-In
+  - Profile synchronization
+  - Automatic account creation
+- **Implementation**: Using `passport-google-oauth20`
+- **Configuration**: Requires Google Client ID and Secret
+
+### 2. Leaflet Maps
+- **Purpose**: Location-based services and map visualization
+- **Features**:
+  - Interactive maps
+  - Location search
+  - Nearby car locations
+  - Route visualization
+- **Implementation**: Using `leaflet` package
+- **Configuration**: Requires Mapbox access token
+
 
 ## Tech Stack
 
-- **Node.js**: Runtime environment
-- **Express.js**: Web framework
-- **MySQL**: Database
-- **JWT**: Authentication
-- **Zod**: Schema validation
-- **Helmet**: Security headers
-- **Morgan**: HTTP request logging
-- **Cors**: Cross-origin resource sharing
+- **Backend**: Node.js, Express.js
+- **Database**: MySQL
+- **Authentication**: JWT, bcrypt
+- **Security**: express-rate-limit, helmet
+- **Testing**: Jest, Supertest
 
-## Getting Started
+## Project Structure
 
-### Prerequisites
+```
+├── src/
+│   ├── controllers/     # Business logic
+│   ├── middleware/      # Custom middleware
+│   ├── routes/          # API routes
+│   ├── db/             # Database configuration
+│   └── utils/          # Utility functions
+├── docs/               # Documentation
+├── tests/             # Test files
+└── server.js          # Application entry point
+```
 
-- Node.js (v14 or higher)
-- MySQL (v8 or higher)
-- npm or yarn
+## API Endpoints
 
-### Installation
+## Endpoint API
+
+### 1. Autentikasi (`/auth`)
+- `POST /auth/login` - Login pengguna
+- `POST /auth/register` - Registrasi pengguna baru
+- `GET /auth/google` - Login dengan Google
+- `GET /auth/google/callback` - Callback untuk autentikasi Google
+
+### 2. Mobil (`/mobil`)
+- `GET /mobil` - Mendapatkan semua data mobil
+- `GET /mobil/:id` - Mendapatkan detail mobil berdasarkan ID
+- `POST /mobil` - Menambahkan mobil baru
+- `PUT /mobil/:id` - Mengupdate data mobil
+- `DELETE /mobil/:id` - Menghapus data mobil
+
+### 3. Pemilik (`/pemilik`)
+- `GET /pemilik` - Mendapatkan semua data pemilik
+- `GET /pemilik/:id` - Mendapatkan detail pemilik berdasarkan ID
+- `POST /pemilik` - Menambahkan pemilik baru
+- `PUT /pemilik/:id` - Mengupdate data pemilik
+- `DELETE /pemilik/:id` - Menghapus data pemilik
+
+### 4. Penyewa (`/penyewa`)
+- `GET /penyewa` - Mendapatkan semua data penyewa
+- `GET /penyewa/:id` - Mendapatkan detail penyewa berdasarkan ID
+- `POST /penyewa` - Menambahkan penyewa baru
+- `PUT /penyewa/:id` - Mengupdate data penyewa
+- `DELETE /penyewa/:id` - Menghapus data penyewa
+
+### 5. Rental (`/rental`)
+- `GET /rental` - Mendapatkan semua data rental
+- `GET /rental/:id` - Mendapatkan detail rental berdasarkan ID
+- `POST /rental` - Menambahkan rental baru
+- `PUT /rental/:id` - Mengupdate data rental
+- `DELETE /rental/:id` - Menghapus data rental
+
+### 6. Return (`/return`)
+- `GET /return` - Mendapatkan semua data return
+- `GET /return/:id` - Mendapatkan detail return berdasarkan ID
+- `POST /return` - Menambahkan return baru
+- `PUT /return/:id` - Mengupdate data return
+- `DELETE /return/:id` - Menghapus data return
+
+### 7. Ulasan (`/ulasan`)
+- `GET /ulasan` - Mendapatkan semua data ulasan
+- `GET /ulasan/:id` - Mendapatkan detail ulasan berdasarkan ID
+- `POST /ulasan` - Menambahkan ulasan baru
+- `PUT /ulasan/:id` - Mengupdate data ulasan
+- `DELETE /ulasan/:id` - Menghapus data ulasan
+
+
+API COMPLEX
+
+### 1. Detail Transaksi Penyewaan (`/detailTransaksiPenyewaan`)
+- `GET /detailTransaksiPenyewaan/:id_rental` - Mendapatkan detail transaksi penyewaan berdasarkan ID rental
+
+### 2. Riwayat Rental (`/rental-history`)
+- `GET /rental-history` - Mendapatkan semua riwayat rental
+- `GET /rental-history/tenant/:penyewa_id` - Mendapatkan riwayat rental untuk penyewa tertentu
+
+### 3. Detail Rental (`/rental-detail`)
+- `GET /rental-detail` - Mendapatkan semua informasi detail rental
+- `GET /rental-detail/:id_rental` - Mendapatkan informasi detail rental berdasarkan ID
+
+### 4. Mobil Pemilik (`/owner-cars`)
+- `GET /owner-cars/:id_pemilik/cars-with-last-lease` - Mendapatkan semua mobil milik pemilik beserta status sewa terakhir
+- `GET /owner-cars/:id_pemilik/car-fleet-summary` - Mendapatkan ringkasan armada mobil pemilik dengan statistik rental
+
+### 5. Laporan (`/laporan`)
+- `GET /laporan/penyewa-terbanyak` - Menampilkan penyewa yang paling sering menyewa mobil
+- `GET /laporan/mobil-paling-laris` - Menampilkan mobil yang paling sering disewa
+- `GET /laporan/denda-terbesar` - Menampilkan data rental dengan total denda terbesar
+
+### 6. Lokasi Rental (`/lokasi-rental`)
+- `GET /lokasi-rental` - Menampilkan semua lokasi rental
+- `GET /lokasi-rental/search` - Mencari lokasi rental berdasarkan kata kunci alamat
+- `GET /lokasi-rental/provinsi/search` - Mencari lokasi rental berdasarkan provinsi
+- `GET /lokasi-rental/provinsi/list` - Mendapatkan daftar provinsi yang tersedia
+- `GET /lokasi-rental/:id_pemilik` - Menampilkan detail lokasi rental berdasarkan ID pemilik
+
+
+### Authentication
+- `POST /auth/register` - User registration
+- `POST /auth/login` - User login
+- `GET /auth/google` - Google OAuth login
+
+### Cars
+- `GET /cars` - List all cars
+- `GET /cars/:id` - Get car details
+- `POST /cars` - Add new car
+- `PUT /cars/:id` - Update car
+- `DELETE /cars/:id` - Delete car
+
+### Rental
+- `POST /rental` - Create rental
+- `GET /rental/:id` - Get rental details
+- `PUT /rental/:id` - Update rental
+- `DELETE /rental/:id` - Cancel rental
+
+### Location
+- `GET /location/nearby` - Find nearby cars
+- `GET /location/:id` - Get location details
+
+### Reports
+- `GET /laporan/penyewa-terbanyak` - Top renters
+- `GET /laporan/mobil-paling-laris` - Most rented cars
+- `GET /laporan/denda-terbesar` - Highest fines
+
+### Reviews
+- `POST /reviews` - Add review
+- `GET /reviews/:carId` - Get car reviews
+- `PUT /reviews/:id` - Update review
+- `DELETE /reviews/:id` - Delete review
+
+## Security Features
+
+- JWT-based authentication
+- Password hashing with bcrypt
+- Rate limiting for API endpoints
+- SQL injection prevention
+- CORS protection
+- Request throttling
+
+## Rate Limiting
+
+The application implements different throttling levels:
+
+- **Global**: 100 requests per 15 minutes
+- **Search**: 200 requests per 15 minutes
+- **Auth**: 5 requests per hour
+- **Heavy Operations**: 10 requests per hour with 500ms delay
+
+## Installation
 
 1. Clone the repository:
    ```
@@ -65,100 +237,56 @@ A robust and feature-rich API for a car rental management system.
    ```
 
 2. Install dependencies:
-   ```
-   npm install
-   ```
+```bash
+npm install
+```
 
-3. Create a `.env` file in the root directory with the following variables:
-   ```
-   # Server Configuration
-   PORT=3000
-   NODE_ENV=development
+3. Set up environment variables:
+```bash
+cp .env.example .env
+# Edit .env with your configuration
+```
 
-   # Database Configuration
-   DB_HOST=localhost
-   DB_USER=root
-   DB_PASSWORD=
-   DB_NAME=qrent
+4. Initialize the database:
+```bash
+npm run db:setup
+```
 
-   # JWT Configuration
-   JWT_SECRET_KEY=your_jwt_secret_key_here
-   JWT_EXPIRES_IN=1h
+5. Start the server:
+```bash
+npm start
+```
 
-   # Google OAuth Configuration
-   GOOGLE_CLIENT_ID=your_google_client_id_here
-   GOOGLE_CLIENT_SECRET=your_google_client_secret_here
-   GOOGLE_CALLBACK_URL=http://localhost:3000/api/auth/google/callback
+## Environment Variables
 
-   # Rate Limiting
-   RATE_LIMIT_WINDOW_MS=900000
-   RATE_LIMIT_MAX_REQUESTS=100
+```
+PORT=3000
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=your_password
+DB_NAME=car_rental
+JWT_SECRET=your_jwt_secret
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+```
 
-   # Cache Configuration
-   CACHE_TTL=60000
-   ```
+## Testing
 
-4. Start the server:
-   ```
-   npm run dev
-   ```
+Run the test suite:
+```bash
+npm test
+```
+
+Run specific test files:
+```bash
+npm test -- tests/auth.test.js
+npm test -- tests/throttling.test.js
+```
 
 ## API Documentation
 
 The API documentation is available at `/api/docs` when the server is running.
 
-### Endpoints
-
-- **Authentication**: `/api/auth`
-  - `POST /login`: Login with email and password
-  - `POST /register`: Register a new user
-  - `GET /google`: Login with Google
-  - `GET /google/callback`: Google OAuth callback
-
-- **Cars**: `/api/mobil`
-  - `GET /`: Get all cars (with pagination, search, and filtering)
-  - `GET /:id`: Get a car by ID
-  - `POST /`: Create a new car
-  - `PUT /:id`: Update a car
-  - `DELETE /:id`: Delete a car
-
-- **Car Owners**: `/api/pemilik`
-  - `GET /`: Get all car owners
-  - `GET /:id`: Get a car owner by ID
-  - `POST /`: Create a new car owner
-  - `PUT /:id`: Update a car owner
-  - `DELETE /:id`: Delete a car owner
-
-- **Renters**: `/api/penyewa`
-  - `GET /`: Get all renters
-  - `GET /:id`: Get a renter by ID
-  - `POST /`: Create a new renter
-  - `PUT /:id`: Update a renter
-  - `DELETE /:id`: Delete a renter
-
-- **Rentals**: `/api/rental`
-  - `GET /`: Get all rentals
-  - `GET /:id`: Get a rental by ID
-  - `POST /`: Create a new rental
-  - `PUT /:id`: Update a rental
-  - `DELETE /:id`: Delete a rental
-
-- **Returns**: `/api/return`
-  - `GET /`: Get all returns
-  - `GET /:id`: Get a return by ID
-  - `POST /`: Create a new return
-  - `PUT /:id`: Update a return
-  - `DELETE /:id`: Delete a return
-
-- **Reviews**: `/api/ulasan`
-  - `GET /`: Get all reviews
-  - `GET /:id`: Get a review by ID
-  - `POST /`: Create a new review
-  - `PUT /:id`: Update a review
-  - `DELETE /:id`: Delete a review
-
-- **Rental Details**: `/api/detail-transaksi-penyewaan`
-  - `GET /:id_rental`: Get rental details by rental ID
 
 ## License
 
